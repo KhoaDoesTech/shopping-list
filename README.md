@@ -4,7 +4,7 @@ Vanilla JavaScript shopping list app from my Modern JS From The Beginning course
 
 This project was created to focus on working with the DOM, events, state, local storage and other fundamentals of JavaScript.
 
-## Function
+## Project Specs
 
     - Add items to list via form
     - Remove items from list by clicking the "X" button
