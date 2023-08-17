@@ -24,19 +24,19 @@ function onAddItemSubmit(e) {
         return;
     }
 
-    // Check for edit mode
-    if (isEditMode) {
+    // Check for edit mode and Item Exists
+    if (checkIfItemExists(newItem)) {
+        alert("That item already exists");
+        return;
+    } else if (isEditMode) {
         const itemToEdit = itemList.querySelector(".edit-mode");
 
-        removeItemFromStorage(itemToEdit.textContent);
+        editItemFromStorage(itemToEdit.textContent, newItem);
         itemToEdit.classList.remove("edit-mode");
-        itemToEdit.remove();
-        isEditMode = false;
-    } else {
-        if (checkIfItemExists(newItem)) {
-            alert("That item already exists");
-            return;
-        }
+        itemToEdit.firstChild.textContent = newItem;
+
+        checkUI();
+        return;
     }
 
     // Create item DOM element
@@ -46,8 +46,6 @@ function onAddItemSubmit(e) {
     addItemToStorage(newItem);
 
     checkUI();
-
-    itemInput.value = "";
 }
 
 function addItemToDOM(item) {
@@ -137,6 +135,17 @@ function setItemToEdit(item) {
 
     formBtn.style.backgroundColor = "#228B22";
     itemInput.value = item.textContent;
+}
+
+function editItemFromStorage(item, replace) {
+    let itemsFromStorage = getItemsFromStorage();
+    // Filter out item to be removed
+    itemsFromStorage = itemsFromStorage.map((i) =>
+        i === item ? (i = replace) : i
+    );
+
+    // Re-set to localStorage
+    localStorage.setItem("items", JSON.stringify(itemsFromStorage));
 }
 
 function removeItem(item) {
